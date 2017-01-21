@@ -1,0 +1,15 @@
+{
+  "name": "ggj2017_remote",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "kalm": "^1.4.0",
+    "kalm-websocket": "^2.0.0"
+  }
+}
