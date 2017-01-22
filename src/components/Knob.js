@@ -34,6 +34,15 @@ class Knob extends Component {
 		setTimeout(() => {
 			document.getElementById('joystick-wrapper')
 				.addEventListener('mouseleave', this.handleRelease.bind(this));
+			document.getElementById('joystick-wrapper')
+				.addEventListener('mousemove', this.handleMove.bind(this));
+			document.getElementById('joystick-wrapper')
+				.addEventListener('touchend', this.handleRelease.bind(this));
+			document.getElementById('joystick-wrapper')
+				.addEventListener('touchcancel', this.handleRelease.bind(this));
+			document.getElementById('joystick-wrapper')
+				.addEventListener('touchmove', this.handleMove.bind(this));
+			
 		}, 1000);
 	}
 
@@ -58,7 +67,6 @@ class Knob extends Component {
 		this.force.x = Math.min(1, Math.max(-1, (this.knob.x - this.knob.rX)/this.maxTilt));
 		this.force.y = Math.min(1, Math.max(-1, (this.knob.y - this.knob.rY)/this.maxTilt));
 
-		//console.log(this.force);
 		Net.send('player.move', {
 			x: this.force.x,
 			y: this.force.y,
@@ -85,16 +93,21 @@ class Knob extends Component {
 			this.knob.x = this.knob.rX + (evt.x - this.origin.x);
 			this.knob.y = this.knob.rY + (evt.y - this.origin.y);
 		}
+		evt.preventDefault();
+		return false;
 	}
 
 	render() {
 		return (
 			<div class="joystick-knob" style={{
-				width: this.knob.size +'px',
-				height: this.knob.size + 'px',
-				top: this.knob.y + 'px',
-				left: this.knob.x + 'px'
-			}} onMouseDown={ this.handlePress.bind(this) } onMouseMove={ this.handleMove.bind(this) } />
+					width: this.knob.size +'px',
+					height: this.knob.size + 'px',
+					top: this.knob.y + 'px',
+					left: this.knob.x + 'px'
+				}} 
+				onMouseDown={ this.handlePress.bind(this) } 
+				onTouchStart={ this.handlePress.bind(this) }
+			/>
 		);
 	}
 }

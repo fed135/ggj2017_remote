@@ -7,14 +7,25 @@ class Splash extends Component {
 
 		this.label = window.isMobileDevice?'Play':'Spectate';
 		this.locked = false;
+
+		this.fullScreen = false;
 	}
 
 	handleClick() {
-		this.locked = true;
-		var match = '' + document.getElementById('lobby_name').value
-		console.log('Sending ', this.label, match, 'to socket server');
-		Net.subscribe('lobby.join', this.handleReply.bind(this));
-		Net.send('lobby.join', { match, role: this.label.toLowerCase() });
+		if (!this.locked) {
+			if (!this.fullScreen) {
+				const tag = document.body;
+				const fsEvent = (tag.requestFullScreen)?"requestFullScreen":(tag.mozRequestFullScreen)?"mozRequestFullScreen":(tag.webkitRequestFullScreenWithKeys)?"webkitRequestFullScreenWithKeys":(tag.webkitRequestFullScreen)?"webkitRequestFullScreen":"FullscreenError";
+
+				// Enter full screen
+				tag[fsEvent]();	
+			}
+
+			this.locked = true;
+			var match = '' + document.getElementById('lobby_name').value
+			Net.subscribe('lobby.join', this.handleReply.bind(this));
+			Net.send('lobby.join', { match, role: this.label.toLowerCase() });
+		}
 	}
 
 	handleReply(packet) {

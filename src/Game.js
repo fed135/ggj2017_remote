@@ -15,7 +15,6 @@ class Game extends Component {
 	}
 
 	nav(page) {
-		console.log('movin to ', page, 'from', this.props.page);
 		this.props.page = page || this.props.page;
 
 		switch(this.props.page) {
