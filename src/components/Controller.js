@@ -25,6 +25,7 @@ class Controller extends Component {
 	}
 
 	handleButtonPress() {
+		navigator.vibrate([150]);
 		Net.send('player.punch', { player: Net.match.color, match: Net.match.name, ts: Date.now() });
 	}
 
