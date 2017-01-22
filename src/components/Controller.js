@@ -45,7 +45,7 @@ class Controller extends Component {
 							top: this.action.y + 'px',
 							left: this.action.x + 'px'
 						}}
-						onClick={ this.handleButtonPress.bind(this) }>
+						onTouchEnd={ this.handleButtonPress.bind(this) }>
 						<span>Action</span>
 					</div>
 				</div>
