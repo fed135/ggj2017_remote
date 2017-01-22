@@ -53,7 +53,7 @@ class Splash extends Component {
 			<div>
 				<div class="whiteboard">
 					<div class="texture" />
-					<h2>Wave</h2>
+					<div class="logo" />
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3 form-group col-xs-8 col-xs-offset-2">
 							<input id="lobby_name" class="form-control" />
