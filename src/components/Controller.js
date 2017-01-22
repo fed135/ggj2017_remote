@@ -14,6 +14,10 @@ class Controller extends Component {
 		};
 
 		Net.subscribe('player.vibrate', this.handleVibrate.bind(this));
+		setTimeout(() => {
+			document.getElementById('action-btn')
+				.addEventListener('touchend', this.handleButtonPress.bind(this));
+		}, 1000);
 	}
 
 	handleVibrate(pattern) {
@@ -38,14 +42,14 @@ class Controller extends Component {
 				</div>
 				<div class="sec col-xs-6 col-sm-6">
 					<div 
+						id="action-btn"
 						class={ btnClass }
 						style={{
 							width: this.action.size +'px',
 							height: this.action.size + 'px',
 							top: this.action.y + 'px',
 							left: this.action.x + 'px'
-						}}
-						onTouchEnd={ this.handleButtonPress.bind(this) }>
+						}}>
 						<span>Action</span>
 					</div>
 				</div>
