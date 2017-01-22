@@ -9,9 +9,15 @@ class Controller extends Component {
 
 		this.action = {
 			size: window.innerHeight * 0.3,
-			x: (window.innerWidth * 0.15) - ((window.innerHeight * 0.3) * 0.5),
-			y: window.innerHeight * 0.35
+			x: (window.innerWidth * 0.25) - ((window.innerHeight * 0.3) * 0.5),
+			y: window.innerHeight * 0.425
 		};
+
+		Net.subscribe('player.vibrate', this.handleVibrate.bind(this));
+	}
+
+	handleVibrate(pattern) {
+		navigator.vibrate([pattern.duration]);
 	}
 
 	handleButtonPress() {
@@ -20,9 +26,11 @@ class Controller extends Component {
 
 	render() {
 		const btnClass = 'action-button player_' + Net.match.color;
+		const controllerClass = 'controller row player_' + Net.match.color;
 
 		return (
-			<div class="controller row">
+			<div class={ controllerClass }>
+				<div class="whiteboard" />
 				<div class="sec col-xs-6 col-sm-6">
 					<Joystick />
 				</div>

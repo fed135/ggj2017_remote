@@ -15,7 +15,8 @@ class Knob extends Component {
 
 		this.origin = {
 			x: null,
-			y: null
+			y: null,
+			touch: null
 		};
 
 		this.force = {
@@ -42,7 +43,8 @@ class Knob extends Component {
 				.addEventListener('touchcancel', this.handleRelease.bind(this));
 			document.getElementById('joystick-wrapper')
 				.addEventListener('touchmove', this.handleMove.bind(this));
-			
+			document.getElementById('knob')
+				.addEventListener('touchstart', this.handlePress.bind(this));
 		}, 1000);
 	}
 
@@ -53,14 +55,42 @@ class Knob extends Component {
 	handlePress(evt) {
 		this.updateTimer = window.requestAnimationFrame(this.refreshStick.bind(this));
 		this.pressed = true;
-		this.origin.x = evt.x;
-		this.origin.y = evt.y;
+		if (evt.touches) {
+			const loc = this.getTouchLocation(evt.touches);
+			if (loc.x > -1) {
+				this.origin = { x: loc.x, y: loc.y, touch: loc.touch }
+			}
+		}
+		else {
+			this.origin.x = evt.x;
+			this.origin.y = evt.y;
+		}
+		
 	}
 
 	handleRelease(evt) {
 		this.pressed = false;
 		this.origin.x = null;
 		this.origin.y = null;
+	}
+
+	getTouchLocation(touches) {
+		const ret = {
+			x: -1,
+			y: -1,
+			touch: 0
+		};
+
+		for (let i = 0; i < touches.length; i++) {
+			if (touches[i].clientX >= 1 && touches[i].clientX < window.innerWidth * 0.5) {
+				ret.x = touches[i].clientX;
+				ret.y = touches[i].clientY;
+				ret.touch = i;
+				break;
+			}
+		}
+
+		return ret;
 	}
 
 	refreshStick() {
@@ -90,8 +120,14 @@ class Knob extends Component {
 	handleMove(evt) {
 		// Update force
 		if (this.pressed) {
-			this.knob.x = this.knob.rX + (evt.x - this.origin.x);
-			this.knob.y = this.knob.rY + (evt.y - this.origin.y);
+			if (evt.touches) {
+				this.knob.x = this.knob.rX + (evt.touches[this.origin.touch || 0].clientX - this.origin.x);
+				this.knob.y = this.knob.rY + (evt.touches[this.origin.touch || 0].clientY - this.origin.y);
+			}
+			else {
+				this.knob.x = this.knob.rX + (evt.x - this.origin.x);
+				this.knob.y = this.knob.rY + (evt.y - this.origin.y);
+			}
 		}
 		evt.preventDefault();
 		return false;
@@ -99,14 +135,13 @@ class Knob extends Component {
 
 	render() {
 		return (
-			<div class="joystick-knob" style={{
+			<div class="joystick-knob" id="knob" style={{
 					width: this.knob.size +'px',
 					height: this.knob.size + 'px',
 					top: this.knob.y + 'px',
 					left: this.knob.x + 'px'
 				}} 
 				onMouseDown={ this.handlePress.bind(this) } 
-				onTouchStart={ this.handlePress.bind(this) }
 			/>
 		);
 	}
