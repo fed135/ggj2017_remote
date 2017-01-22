@@ -9,20 +9,26 @@ class Splash extends Component {
 		this.locked = false;
 
 		this.fullScreen = false;
+
+		const urlMatch = window.location.href.split('#');
+		if (urlMatch[1]) {
+			setTimeout(() => {
+				document.getElementById('lobby_name').value = urlMatch[1];
+			}, 10);
+		}
 	}
 
-	handleClick() {
+	handleClick(param) {
 		if (!this.locked) {
-			if (!this.fullScreen) {
-				const tag = document.body;
-				const fsEvent = (tag.requestFullScreen)?"requestFullScreen":(tag.mozRequestFullScreen)?"mozRequestFullScreen":(tag.webkitRequestFullScreenWithKeys)?"webkitRequestFullScreenWithKeys":(tag.webkitRequestFullScreen)?"webkitRequestFullScreen":"FullscreenError";
-
-				// Enter full screen
-				tag[fsEvent]();	
-			}
-
 			this.locked = true;
-			var match = '' + document.getElementById('lobby_name').value
+			const tag = document.body;
+			const fsEvent = (tag.requestFullScreen)?"requestFullScreen":(tag.mozRequestFullScreen)?"mozRequestFullScreen":(tag.webkitRequestFullScreenWithKeys)?"webkitRequestFullScreenWithKeys":(tag.webkitRequestFullScreen)?"webkitRequestFullScreen":"FullscreenError";
+
+			// Enter full screen
+			tag[fsEvent]();	
+
+			const match = '' + document.getElementById('lobby_name').value.toLowerCase();
+
 			Net.subscribe('lobby.join', this.handleReply.bind(this));
 			Net.send('lobby.join', { match, role: this.label.toLowerCase() });
 		}
@@ -46,6 +52,7 @@ class Splash extends Component {
 		return (
 			<div>
 				<div class="whiteboard">
+					<div class="texture" />
 					<h2>Wave</h2>
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3 form-group col-xs-8 col-xs-offset-2">

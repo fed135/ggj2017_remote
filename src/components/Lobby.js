@@ -55,6 +55,7 @@ class Lobby extends Component {
 		return (
 			<div class={ bgClass }>
 				<div class="whiteboard">
+					<div class="texture" />
 					<h2>Lobby</h2>
 					<div class="row">
 						<h3>{ Net.match.name }</h3>

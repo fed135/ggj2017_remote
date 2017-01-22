@@ -30,7 +30,9 @@ class Controller extends Component {
 
 		return (
 			<div class={ controllerClass }>
-				<div class="whiteboard" />
+				<div class="whiteboard">
+					<div class="texture" />
+				</div>
 				<div class="sec col-xs-6 col-sm-6">
 					<Joystick />
 				</div>
