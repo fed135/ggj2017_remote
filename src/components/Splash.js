@@ -29,6 +29,11 @@ class Splash extends Component {
 
 			const match = '' + document.getElementById('lobby_name').value.toLowerCase();
 
+			if (match === '') {
+				this.locked = false;
+				return false;
+			}
+
 			Net.subscribe('lobby.join', this.handleReply.bind(this));
 			Net.send('lobby.join', { match, role: this.label.toLowerCase() });
 		}
